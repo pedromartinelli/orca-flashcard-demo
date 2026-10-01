@@ -119,6 +119,8 @@ O principal objetivo é mostrar consistência, lacunas e padrões de estudo. Ess
 
 A recomendação é incluí-lo no produto, mas não necessariamente no primeiro lançamento do MVP. O painel inicial pode começar com gráficos simples e receber o calendário posteriormente.
 
+No MVP haverá uma versão diferente e simplificada de calendário, voltada apenas ao planejamento. Ela mostrará datas de eventos, próximas sessões recomendadas e o foco previsto. O mapa de atividade descrito acima continuará como evolução futura.
+
 ## 5. Estados de aprendizagem atualizados
 
 A terminologia fica:
@@ -175,6 +177,8 @@ Em períodos com várias provas próximas, o sistema deverá recomendar priorida
 ## 7. Cards associados a vários temas
 
 Um card poderá pertencer a vários temas sem ser duplicado.
+
+Temas também poderão pertencer a várias coleções, e grupos poderão pertencer a vários temas. Tema, grupo e card poderão ser duplicados quando o usuário precisar criar uma versão independente para outro evento ou objetivo de estudo.
 
 Exemplo:
 
@@ -258,7 +262,7 @@ A lista consolidada passa a incluir:
 - Observações e explicações complementares.
 - Etiquetas.
 - Importação por planilhas ou CSV.
-- Duração desejada para uma sessão.
+- Configurações avançadas de duração e composição de sessões.
 - Marcos intermediários para eventos.
 - Resposta digitada.
 - Comparação da resposta por inteligência artificial.
@@ -274,6 +278,7 @@ A lista consolidada passa a incluir:
 - Geração assistida de cards.
 - Detecção automática de alterações substanciais.
 - Algoritmo configurável pelo usuário.
+- Login social com Google, como primeira evolução de autenticação a ser avaliada após o MVP.
 
 ## 11. Escopo consolidado do produto inicial
 
@@ -286,6 +291,7 @@ O produto inicial será uma aplicação web responsiva para dispositivos móveis
 - Exibição do estado atual de aprendizagem em cada card.
 - Arquivamento e exclusão.
 - Sessões manuais e recomendadas.
+- Configuração de uma meta de duração para sessões recomendadas.
 - Inclusão de eventos em sessões manuais.
 - Autoavaliação com acerto ou erro.
 - Registro do tempo de resposta.
@@ -294,6 +300,8 @@ O produto inicial será uma aplicação web responsiva para dispositivos móveis
 - Métricas por card, tema, grupo e evento.
 - Estados de aprendizagem.
 - Eventos com data e prioridade.
+- Calendário simplificado de eventos e sessões recomendadas.
+- Alertas internos configuráveis.
 - Planejamento regressivo flexível.
 - Recomendações de datas para novas sessões.
 - Justificativas das recomendações fora da apresentação do card.

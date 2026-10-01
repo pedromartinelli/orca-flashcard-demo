@@ -39,8 +39,8 @@ O produto deverá ajudar o usuário a decidir o que estudar e quando revisar, se
 | Termo | Definição |
 |---|---|
 | Coleção | Contêiner de mais alto nível usado para organizar um objetivo ou conjunto de estudos. |
-| Tema | Classificação de conteúdo dentro de uma coleção. Um card pode pertencer a vários temas. |
-| Grupo | Subdivisão opcional de um tema. |
+| Tema | Classificação de conteúdo que pode pertencer a uma ou mais coleções. |
+| Grupo | Subdivisão opcional que pode pertencer a um ou mais temas. |
 | Card | Unidade de estudo composta inicialmente por pergunta e resposta. |
 | Estado de aprendizagem | Situação atual do card: `Novo`, `Em aprendizado`, `Em consolidação`, `Consolidado` ou `Revisão pendente`. |
 | Evento | Objetivo com data definida, como prova, concurso, certificação ou apresentação. |
@@ -64,9 +64,9 @@ Pode gerenciar seu conteúdo, eventos, sessões, preferências, histórico e con
 
 ### 6.1 Autenticação e conta
 
-#### RF-AUT-001 — Criar conta
+#### RF-AUT-001 — Criar conta com e-mail e senha
 
-O sistema deverá permitir que uma pessoa crie uma conta utilizando as credenciais suportadas pelo MVP.
+O sistema deverá permitir que uma pessoa crie uma conta utilizando e-mail e senha. Esse será o único método de autenticação do MVP.
 
 Critérios de aceitação:
 
@@ -113,19 +113,45 @@ O usuário deverá poder criar, visualizar, renomear, arquivar, restaurar e excl
 
 #### RF-ORG-002 — Gerenciar temas
 
-O usuário deverá poder criar, visualizar, renomear, reorganizar, arquivar, restaurar e excluir temas.
+O usuário deverá poder criar, visualizar, renomear, reorganizar, duplicar, arquivar, restaurar e excluir temas.
+
+Um mesmo tema poderá pertencer a mais de uma coleção sem ser duplicado.
 
 #### RF-ORG-003 — Gerenciar grupos
 
-O usuário deverá poder criar, visualizar, renomear, reorganizar, arquivar, restaurar e excluir grupos dentro de temas.
+O usuário deverá poder criar, visualizar, renomear, reorganizar, duplicar, arquivar, restaurar e excluir grupos.
+
+Um mesmo grupo poderá pertencer a mais de um tema sem ser duplicado.
 
 #### RF-ORG-004 — Proteger conteúdos relacionados
 
-Uma coleção, um tema ou um grupo não poderá ser excluído de maneira definitiva sem que o sistema informe o impacto sobre os cards e o histórico relacionados.
+Uma coleção, um tema ou um grupo não poderá provocar a exclusão automática de conteúdos que também pertençam a outros contextos.
+
+Antes da exclusão, o sistema deverá informar claramente:
+
+- Quais relações serão removidas.
+- Quais temas, grupos ou cards continuarão existindo em outros contextos.
+- Quais itens ficariam sem outro contexto.
+- Quais itens seriam movidos para a área de excluídos.
+
+Nenhum conteúdo compartilhado será excluído definitivamente sem uma decisão explícita do usuário.
 
 #### RF-ORG-005 — Navegar pela hierarquia
 
-O usuário deverá conseguir navegar pela estrutura `Coleção → Tema → Grupo → Card` e visualizar a quantidade de cards em cada nível.
+O usuário deverá conseguir navegar pela estrutura conceitual `Coleção → Tema → Grupo → Card` e visualizar a quantidade de cards em cada nível.
+
+Como temas, grupos e cards podem possuir vários pais, a interface deverá deixar claro quando um item exibido também pertence a outros contextos.
+
+#### RF-ORG-006 — Duplicar estruturas
+
+O usuário deverá poder duplicar temas e grupos para criar versões independentes destinadas a outro evento ou objetivo de estudo.
+
+A duplicação deverá:
+
+- Criar uma nova identidade para o item duplicado.
+- Permitir alterações sem modificar o item original.
+- Informar quais conteúdos internos serão apenas associados e quais também serão duplicados.
+- Não copiar o histórico de aprendizagem para novos cards criados pela operação.
 
 ### 6.3 Gestão de cards
 
@@ -242,7 +268,7 @@ Ao escolher `Incluir evento na sessão`, os cards relacionados ao evento deverã
 
 #### RF-SEM-003 — Eliminar duplicidades
 
-Se um card for selecionado por mais de uma fonte, deverá aparecer uma única vez no conjunto da sessão, salvo quando o usuário habilitar repetição.
+Se um card for selecionado por mais de uma fonte, deverá aparecer uma única vez no conjunto inicial da sessão. Novas aparições ocorrerão apenas como reforço depois de uma resposta incorreta.
 
 #### RF-SEM-004 — Definir quantidade de cards
 
@@ -252,9 +278,11 @@ O usuário deverá poder escolher a quantidade de cards da sessão, respeitando 
 
 O usuário deverá poder escolher entre a ordem recomendada pelo sistema e uma ordem aleatória.
 
-#### RF-SEM-006 — Configurar repetição
+#### RF-SEM-006 — Repetir cards respondidos incorretamente
 
-O usuário deverá poder definir se cards poderão se repetir durante a mesma sessão.
+Um card respondido incorretamente deverá reaparecer mais adiante na mesma sessão como reforço.
+
+A repetição não poderá ocorrer imediatamente após o erro quando houver outros cards disponíveis.
 
 #### RF-SEM-007 — Visualizar resumo antes de iniciar
 
@@ -265,7 +293,7 @@ Antes do início, o sistema deverá mostrar:
 - Critérios utilizados para formar a sessão.
 - Avisos relevantes sobre limitações da seleção.
 
-A duração estimada não fará parte do MVP.
+Na sessão recomendada, o resumo também deverá apresentar a meta de duração configurada e a quantidade estimada de cards.
 
 ### 6.5 Sessão recomendada
 
@@ -323,6 +351,16 @@ Exemplo:
 
 > **Sessão focada no evento “Prova de Cálculo”, definido com prioridade alta.**
 
+#### RF-SER-008 — Configurar duração das recomendações
+
+O usuário deverá poder definir, nas configurações das recomendações, a duração desejada para sessões recomendadas.
+
+O sistema deverá estimar quantos cards cabem nesse período usando o tempo médio de resposta de cada card. Quando não houver histórico suficiente, utilizará a média geral do usuário e, na ausência dela, uma estimativa inicial do sistema.
+
+A duração será uma meta aproximada, pois o tempo real dependerá do comportamento do usuário durante a sessão.
+
+No MVP, essa será a principal configuração oferecida ao usuário; os pesos internos do algoritmo não serão configuráveis.
+
 ### 6.6 Execução da sessão
 
 #### RF-SES-001 — Apresentar pergunta
@@ -335,7 +373,9 @@ O usuário deverá poder revelar a resposta quando considerar que concluiu sua t
 
 #### RF-SES-003 — Registrar tempo de resposta
 
-O sistema deverá registrar o tempo utilizado pelo usuário para responder mentalmente ao card.
+O sistema deverá registrar o tempo entre a apresentação da pergunta e a revelação da resposta.
+
+O período utilizado para comparar a resposta e clicar em `Acertei` ou `Errei` não fará parte do tempo de resposta do card.
 
 #### RF-SES-004 — Registrar autoavaliação
 
@@ -355,6 +395,8 @@ O tempo em pausa não deverá ser contabilizado como tempo de resposta.
 
 O usuário deverá poder encerrar uma sessão incompleta. Respostas já concluídas serão preservadas, e cards ainda não respondidos não gerarão registros de acerto ou erro.
 
+Se a página for fechada durante um card ainda não avaliado, a tentativa incompleta e seu tempo não serão contabilizados. A sessão poderá ser retomada a partir desse card.
+
 #### RF-SES-008 — Concluir sessão
 
 Uma sessão será considerada concluída quando todos os cards previstos forem respondidos ou quando uma condição de encerramento definida pelo produto for atingida.
@@ -369,6 +411,28 @@ Ao final, o sistema deverá mostrar:
 - Tempo médio de resposta.
 - Temas e eventos contemplados.
 - Cards que precisam de maior atenção.
+
+#### RF-SES-010 — Apresentar orientação antes da sessão
+
+Antes de todas as sessões, o sistema deverá apresentar uma orientação breve contendo:
+
+- Como revelar a resposta.
+- Como marcar `Acertei` ou `Errei`.
+- Como pausar, retomar ou encerrar a sessão.
+- O momento em que o tempo de resposta é finalizado.
+- O que é preservado ou descartado se a página for fechada.
+- A regra de repetição de cards respondidos incorretamente.
+
+No primeiro uso, a orientação poderá ser mais detalhada. Nas sessões posteriores, deverá permanecer acessível em uma versão resumida, sem impedir que o usuário prossiga imediatamente.
+
+#### RF-SES-011 — Registrar primeira tentativa e reforços
+
+Quando um card reaparecer após um erro na mesma sessão:
+
+- A primeira resposta da sessão será utilizada para atualizar o estado, a taxa principal de acerto e o motor de recomendação.
+- As respostas seguintes serão registradas como tentativas de reforço.
+- Tentativas de reforço não transformarão o erro inicial em acerto nas métricas principais.
+- O histórico poderá mostrar separadamente a evolução dentro da sessão.
 
 ### 6.7 Estados de aprendizagem
 
@@ -419,7 +483,9 @@ O usuário deverá poder criar um evento informando:
 
 #### RF-EVE-002 — Gerenciar evento
 
-O usuário deverá poder visualizar, editar, concluir, cancelar e excluir eventos.
+O usuário deverá poder visualizar, editar e excluir eventos, inclusive depois da data definida.
+
+O usuário poderá alterar nome, data, prioridade e conteúdos associados a qualquer momento.
 
 #### RF-EVE-003 — Associar conteúdos
 
@@ -476,6 +542,28 @@ Quando houver vários eventos de alta prioridade, o sistema deverá contemplar t
 Ao definir prioridade alta, o sistema deverá avisar que eventos de menor prioridade poderão receber pouca ou nenhuma recomendação temporariamente.
 
 Em períodos com várias provas próximas, o sistema deverá sugerir prioridades semelhantes, preservando a decisão final do usuário.
+
+#### RF-EVE-011 — Notificar término sem alterar o evento
+
+Ao atingir ou ultrapassar a data de um evento, o sistema deverá:
+
+- Notificar o usuário de que a data chegou.
+- Manter o evento e seus relacionamentos.
+- Permitir que o usuário altere a data, o nome, a prioridade e os conteúdos associados.
+- Permitir que o usuário exclua o evento quando desejar.
+
+O MVP não concluirá, arquivará nem excluirá automaticamente o evento.
+
+#### RF-EVE-012 — Exibir calendário simplificado
+
+O sistema deverá oferecer uma visualização simples do planejamento, contendo:
+
+- Datas dos eventos.
+- Próximas sessões recomendadas.
+- Evento ou tema que receberá o foco planejado.
+- Indicação visual de datas que foram recalculadas.
+
+O calendário será informativo e acompanhará o planejamento recalculado; ele não criará obrigações nem bloqueará sessões fora das datas sugeridas.
 
 ### 6.9 Histórico e métricas
 
@@ -547,7 +635,7 @@ O sistema deverá poder alertar o usuário sobre situações relevantes, como:
 
 O usuário deverá poder ativar ou desativar categorias de alerta para evitar notificações indesejadas.
 
-No MVP, esses alertas poderão existir apenas dentro da aplicação; canais externos dependerão de decisão posterior.
+No MVP, esses alertas existirão dentro da aplicação. E-mail, notificações do navegador e push ficarão para uma fase futura.
 
 ## 7. Regras de negócio consolidadas
 
@@ -558,6 +646,8 @@ Todo conteúdo e histórico pertencem a um único usuário e não serão compart
 ### RB-002 — Identidade única do card
 
 Associar um card a vários temas, grupos ou eventos não cria cópias nem históricos separados.
+
+Temas e grupos também poderão possuir vários pais sem que isso, isoladamente, crie cópias.
 
 ### RB-003 — Estado inicial
 
@@ -581,7 +671,7 @@ Cards escolhidos individualmente para uma sessão manual têm precedência sobre
 
 ### RB-008 — Deduplicação da sessão
 
-Um card selecionado por várias fontes deverá ocupar uma única posição, exceto quando a repetição estiver explicitamente habilitada.
+Um card selecionado por várias fontes deverá ocupar uma única posição inicial. Caso a primeira resposta seja incorreta, ele reaparecerá posteriormente como reforço.
 
 ### RB-009 — Prioridade recente
 
@@ -611,7 +701,212 @@ Disponibilidade e datas sugeridas orientam o planejamento, mas não restringem o
 
 Não haverá expiração automática do histórico durante a vida da conta. A exclusão da conta seguirá o processo de remoção de dados aplicável.
 
-## 8. Requisitos não funcionais
+### RB-016 — Remoção de associação não é exclusão
+
+Excluir um item de determinado contexto remove sua relação com aquele pai. Se o item possuir outros pais, ele continuará existindo e não poderá ser enviado para a área de excluídos sem autorização explícita.
+
+### RB-017 — Duplicação cria independência
+
+Um tema, grupo ou card duplicado terá identidade própria. Alterações realizadas na cópia não modificarão o original.
+
+### RB-018 — Recuperação indefinida
+
+Itens movidos para a área de excluídos permanecerão recuperáveis indefinidamente no MVP, exceto quando o usuário solicitar sua exclusão definitiva ou excluir a conta.
+
+### RB-019 — Primeira tentativa da sessão
+
+A primeira resposta de um card em uma sessão será a referência para estado, taxa principal de acerto e recomendação. Repetições na mesma sessão servirão como reforço e serão identificadas separadamente.
+
+### RB-020 — Encerramento do tempo de resposta
+
+O tempo de resposta termina quando o usuário revela a resposta.
+
+### RB-021 — Permanência do evento
+
+A chegada da data de um evento gera uma notificação, mas não altera nem remove automaticamente o evento.
+
+## 8. Modelo inicial dos estados e recomendações
+
+As regras desta seção serão os parâmetros iniciais do MVP. Elas deverão permanecer documentadas para o usuário e poderão ser calibradas depois de testes e dados reais, sem alterar a ordem conceitual dos fatores já aprovada.
+
+### 8.1 Tentativa qualificadora
+
+Para estados, taxa principal de acerto e prioridade, será considerada a primeira resposta de cada card em cada sessão.
+
+Respostas adicionais ao mesmo card na sessão serão armazenadas como reforços, mas não substituirão o resultado da primeira tentativa.
+
+O histórico recente será composto inicialmente pelas cinco últimas tentativas qualificadoras. Quando houver menos de cinco, serão utilizadas todas as disponíveis.
+
+### 8.2 Transições iniciais dos estados
+
+#### Novo
+
+- Um card permanece `Novo` enquanto não possuir tentativa qualificadora.
+- Depois da primeira tentativa, passa para `Em aprendizado`, independentemente do resultado.
+
+#### Em aprendizado
+
+- Permanece nesse estado após um erro.
+- Avança para `Em consolidação` depois de dois acertos qualificadores consecutivos, em sessões distintas e com tempo de resposta aceitável.
+- Um acerto lento é registrado como acerto, mas não completa a sequência necessária para avançar.
+
+#### Em consolidação
+
+- Avança para `Consolidado` depois de três acertos qualificadores consecutivos obtidos após entrar em consolidação, em sessões distintas e com tempo aceitável.
+- Um erro faz o card voltar para `Em aprendizado`.
+- Um acerto lento mantém o card em consolidação e interrompe a sequência de avanço.
+
+#### Consolidado
+
+- Permanece consolidado enquanto as revisões forem respondidas corretamente dentro do tempo aceitável.
+- Entra em `Revisão pendente` quando alcançar a próxima data de revisão sem uma nova tentativa qualificadora.
+- Um erro faz o card voltar para `Em consolidação`.
+- Dois erros entre as três últimas tentativas qualificadoras fazem o card voltar para `Em aprendizado`.
+- Dois acertos lentos entre as três últimas tentativas poderão fazê-lo voltar para `Em consolidação`.
+
+#### Revisão pendente
+
+- Um acerto em tempo aceitável retorna o card para `Consolidado` e amplia o próximo intervalo.
+- Um acerto lento leva o card para `Em consolidação`.
+- Um erro leva o card para `Em consolidação`; se também satisfizer a regra de dois erros entre as três últimas tentativas, irá para `Em aprendizado`.
+
+### 8.3 Intervalos iniciais de revisão
+
+| Situação | Próxima revisão inicial |
+|---|---|
+| Erro em qualquer estado | Repetição na sessão e nova recomendação no dia seguinte |
+| Acerto que mantém o card `Em aprendizado` | 1 dia |
+| Acerto que leva o card para `Em consolidação` | 3 dias |
+| Acerto que mantém o card `Em consolidação` | 7 dias |
+| Acerto que leva o card para `Consolidado` | 14 dias |
+| Revisões corretas em `Consolidado` | Dobrar o intervalo anterior, até 90 dias |
+| Acerto lento | Não ampliar o intervalo vigente |
+
+Os intervalos determinam necessidade de revisão, mas eventos prioritários poderão antecipar a apresentação do card.
+
+### 8.4 Classificação do tempo de resposta
+
+O tempo será comparado com uma referência individual, evitando um limite universal para todos os cards e usuários.
+
+- Com pelo menos três acertos qualificadores no card, a referência será a média dos tempos desses acertos.
+- Sem histórico suficiente no card, será utilizada a média de acertos do usuário em seus outros cards.
+- Sem histórico suficiente do usuário, será utilizada uma referência inicial de 30 segundos.
+- Um tempo será inicialmente classificado como lento quando superar 150% da referência aplicável.
+
+A referência utilizada para avaliar uma tentativa será calculada antes de incluir o tempo dessa própria tentativa.
+
+### 8.5 Pontuação inicial do card
+
+Cada card elegível receberá uma prioridade de `0` a `100`:
+
+```text
+Prioridade do card =
+    45% pressão por erros
+  + 25% pressão por lentidão
+  + 20% necessidade de revisão
+  + 10% incerteza por pouco histórico
+```
+
+#### Pressão por erros
+
+- Considera as cinco últimas tentativas qualificadoras.
+- Tentativas mais recentes recebem pesos `5`, `4`, `3`, `2` e `1`, da mais recente para a mais antiga.
+- Um erro vale `1` e um acerto vale `0`.
+- Sem histórico, o componente começa em `0,5`.
+
+#### Pressão por lentidão
+
+- Compara a média recente do card com a referência individual de tempo.
+- Na referência ou abaixo dela, o componente vale `0`.
+- Em 200% da referência ou acima, vale `1`.
+- Valores intermediários crescem proporcionalmente.
+- Sem histórico suficiente, o componente começa em `0,5`.
+
+#### Necessidade de revisão
+
+- Compara o tempo desde a última tentativa com o intervalo vigente do card.
+- Ao atingir ou ultrapassar o intervalo, o componente vale `1`.
+- Antes disso, cresce proporcionalmente de `0` a `1`.
+- Para um card `Novo`, que ainda não possui intervalo, o componente começa em `0,5`.
+
+#### Incerteza
+
+- Começa em `1` para um card sem tentativas qualificadoras.
+- Diminui a cada tentativa qualificadora.
+- Chega a `0` depois de cinco tentativas.
+
+Quando houver cards novos e cards com histórico na mesma sessão, a composição tentará reservar inicialmente até 10% para introdução de cards novos. Esse limite poderá ser ultrapassado quando o evento prioritário possuir principalmente cards novos ou quando não houver cards revisáveis suficientes.
+
+### 8.6 Composição por duração
+
+Para preencher a duração escolhida pelo usuário:
+
+1. O sistema ordenará os candidatos pela prioridade calculada.
+2. Para cada card, estimará o tempo pela média histórica de resposta acrescida inicialmente de 5 segundos para revelação, avaliação e avanço.
+3. Sem histórico do card, utilizará a média geral do usuário.
+4. Sem histórico do usuário, utilizará inicialmente 30 segundos por card, além da margem de interação.
+5. Adicionará cards enquanto o tempo acumulado permanecer próximo da duração configurada.
+
+O sistema deverá apresentar a quantidade estimada de cards e deixar claro que a duração real poderá variar.
+
+### 8.7 Distribuição inicial entre eventos
+
+A composição ocorrerá em duas etapas:
+
+1. Distribuir o foco entre eventos e conteúdo geral.
+2. Ordenar os cards de cada parte utilizando a pontuação definida na seção 8.5.
+
+#### Quando existir um evento de alta prioridade
+
+- Por padrão, ao menos 80% da duração recomendada será reservada para eventos de alta prioridade.
+- Esse foco subirá para 90% quando faltar até 14 dias e menos de 70% dos cards relacionados estiverem consolidados.
+- O foco poderá chegar a 100% quando faltar até 7 dias e menos de 70% estiver consolidado, ou quando o usuário solicitar foco exclusivo.
+- A parcela restante será usada para manutenção de eventos médios, baixos e conteúdos sem evento.
+- Em foco de 100%, conteúdos de prioridades inferiores poderão ser temporariamente ignorados.
+
+#### Quando houver vários eventos de alta prioridade
+
+A parcela de alta prioridade será dividida por um índice de necessidade:
+
+```text
+Necessidade do evento =
+    40% proximidade da data
+  + 35% conteúdo ainda não consolidado
+  + 25% dificuldade observada
+```
+
+- A proximidade cresce linearmente de `0` a `1` durante os 90 dias anteriores ao evento e permanece em `1` na data.
+- O conteúdo ainda não consolidado corresponde à proporção de cards relacionados que não estão em `Consolidado`.
+- A dificuldade observada corresponde à média das pressões por erros e lentidão dos cards relacionados.
+
+- Eventos em condições equivalentes receberão parcelas equivalentes.
+- Se a duração permitir, todos os eventos de alta prioridade deverão receber ao menos um card.
+- Cards associados a vários eventos serão apresentados uma vez e poderão satisfazer a parcela de todos eles.
+
+#### Quando não houver evento de alta prioridade
+
+Todos os cards serão ordenados pela prioridade base, com os seguintes multiplicadores iniciais:
+
+| Associação | Multiplicador |
+|---|---:|
+| Evento de média prioridade | `1,20` |
+| Evento de baixa prioridade | `1,05` |
+| Sem evento ativo | `1,00` |
+
+### 8.8 Transparência para o usuário
+
+O produto deverá explicar em linguagem simples:
+
+- Quais fatores formam a prioridade de um card.
+- Que a primeira tentativa da sessão é a utilizada nas métricas principais.
+- Por que um card está em determinado estado.
+- Quando ocorrerá a próxima revisão estimada.
+- Quanto da sessão está direcionado a cada evento.
+- Quando um evento de alta prioridade estiver reduzindo ou suspendendo outras recomendações.
+
+Os pesos e limites poderão aparecer em uma área de ajuda, enquanto a interface cotidiana utilizará explicações curtas e contextuais.
+
+## 9. Requisitos não funcionais
 
 ### RNF-001 — Responsividade
 
@@ -643,7 +938,14 @@ Edições, arquivamentos e novas versões não poderão corromper ou reescrever 
 
 ### RNF-008 — Desempenho percebido
 
-Os fluxos frequentes, especialmente revelar resposta, avaliar card e avançar, deverão responder sem atrasos perceptíveis em condições normais.
+Os fluxos frequentes deverão responder sem atrasos perceptíveis em condições normais. Como metas iniciais:
+
+- Revelar resposta, avaliar card e avançar deverão apresentar reação visual em até 200 milissegundos.
+- Navegações e carregamentos comuns deverão disponibilizar conteúdo utilizável em até 3 segundos.
+- Salvamentos deverão confirmar o resultado em até 1 segundo, sempre que a conexão permitir.
+- A geração de uma recomendação deverá concluir em até 3 segundos para o volume esperado no MVP.
+
+Esses valores serão validados tecnicamente e monitorados durante o desenvolvimento.
 
 ### RNF-009 — Fórmulas matemáticas
 
@@ -651,7 +953,14 @@ Fórmulas deverão ser armazenadas e renderizadas de forma segura, legível e co
 
 ### RNF-010 — Compatibilidade
 
-O MVP deverá oferecer suporte às versões modernas dos principais navegadores definidos antes da implementação.
+O MVP deverá oferecer suporte às duas versões estáveis mais recentes de:
+
+- Google Chrome.
+- Microsoft Edge.
+- Mozilla Firefox.
+- Safari.
+
+Em dispositivos móveis, deverá funcionar nos navegadores principais baseados em Chrome e no Safari do iOS. Recursos essenciais não poderão depender de uma funcionalidade exclusiva de um único navegador.
 
 ### RNF-011 — Rastreabilidade
 
@@ -661,13 +970,13 @@ Registros relevantes deverão possuir data e hora suficientes para reconstruir s
 
 Datas de eventos, sessões e recomendações deverão respeitar o fuso horário configurado ou identificado para o usuário.
 
-## 9. Fora do escopo do MVP
+## 10. Fora do escopo do MVP
 
 - Nível de dificuldade informado manualmente.
 - Observações e explicações complementares.
 - Etiquetas.
 - Importação por planilhas ou CSV.
-- Planejamento por duração desejada da sessão.
+- Configurações avançadas de duração e composição da sessão além da meta de tempo do MVP.
 - Marcos intermediários para eventos.
 - Resposta digitada.
 - Comparação de resposta por inteligência artificial.
@@ -683,73 +992,74 @@ Datas de eventos, sessões e recomendações deverão respeitar o fuso horário 
 - Geração assistida de cards.
 - Detecção automática de alterações substanciais.
 - Configuração manual dos pesos do algoritmo.
-- Calendário visual de atividade, caso não caiba no primeiro lançamento.
+- Calendário analítico de atividade com mapa de intensidade e métricas históricas por dia.
+- Conclusão, arquivamento ou exclusão automática de eventos após suas datas.
+- Alertas por e-mail, navegador ou push.
+- Login social. A integração com o Google será a primeira opção avaliada após a conclusão do MVP.
 
-## 10. Decisões pendentes para validação
-
-Os itens abaixo não impedem o levantamento inicial, mas precisam ser definidos antes da implementação de seus respectivos módulos.
+## 11. Decisões consolidadas e pendências residuais
 
 ### DP-001 — Método de autenticação
 
-Definir se o MVP utilizará e-mail e senha, login social ou ambos.
+**Consolidada.** O MVP utilizará exclusivamente e-mail e senha. Ao término do MVP, a primeira evolução de autenticação a ser avaliada será o login social com Google.
 
-### DP-002 — Estrutura exata de grupos
+### DP-002 — Estrutura de pais e duplicação
 
-Definir se um grupo pertence obrigatoriamente a um único tema e se um card pode estar em vários grupos simultaneamente.
+**Consolidada.** Temas, grupos e cards poderão pertencer a vários pais. Todos poderão ser duplicados para gerar versões independentes. O desenho da ação de duplicação deverá permitir que o usuário entenda quais descendentes serão associados e quais serão copiados.
 
 ### DP-003 — Exclusão de contêineres
 
-Definir o comportamento dos cards quando coleção, tema ou grupo for excluído: impedir exclusão, mover cards ou solicitar decisão ao usuário.
+**Consolidada.** Conteúdos existentes em outros contextos não serão excluídos automaticamente. O sistema mostrará o impacto e solicitará permissão explícita para qualquer exclusão adicional.
 
 ### DP-004 — Retenção da lixeira
 
-Definir se itens excluídos permanecerão recuperáveis indefinidamente ou por um período determinado.
+**Consolidada.** Itens permanecerão recuperáveis indefinidamente no MVP, salvo exclusão definitiva solicitada pelo usuário ou exclusão da conta.
 
 ### DP-005 — Formato de fórmulas
 
-Definir como o usuário escreverá fórmulas no editor, incluindo sintaxe e pré-visualização.
+**Adiada para o desenvolvimento.** Sintaxe, biblioteca e experiência de pré-visualização serão escolhidas junto à solução técnica do editor.
 
-### DP-006 — Quantidade padrão da sessão
+### DP-006 — Duração da sessão recomendada
 
-Definir quantidade inicial, limites mínimos e máximos e comportamento quando a seleção individual superar o limite escolhido.
+**Consolidada.** O usuário definirá uma meta de tempo nas configurações limitadas de recomendação. O sistema estimará a quantidade de cards usando seus tempos médios de resposta.
 
 ### DP-007 — Medição do tempo de resposta
 
-Definir se o cronômetro termina ao revelar a resposta ou ao registrar `Acertei` ou `Errei`.
+**Consolidada.** O cronômetro termina ao revelar a resposta. Todas as sessões começam com uma orientação sobre controles, persistência e contabilização do tempo.
 
 ### DP-008 — Repetição dentro da sessão
 
-Definir o comportamento padrão da repetição e se um erro poderá fazer o card reaparecer na mesma sessão.
+**Consolidada.** Um card respondido incorretamente reaparecerá na mesma sessão. Apenas a primeira resposta atualizará estado, taxa principal de acerto e prioridade; as demais serão tentativas de reforço.
 
 ### DP-009 — Transições dos estados
 
-Definir critérios e limites para avançar, regredir ou colocar um card em `Revisão pendente`.
+**Consolidada inicialmente.** As transições e os intervalos iniciais estão definidos nas seções 8.2 e 8.3 e poderão ser recalibrados após validação.
 
 ### DP-010 — Pesos da recomendação
 
-Definir os pesos iniciais de acerto, tempo de resposta, tempo sem revisão, eventos e quantidade de evidências.
+**Consolidada inicialmente.** A pontuação inicial está definida na seção 8.5, com maior peso para erros, seguida de tempo de resposta, necessidade de revisão e incerteza.
 
 ### DP-011 — Distribuição entre eventos
 
-Definir percentuais ou limites para eventos de alta, média e baixa prioridade e para vários eventos de alta prioridade simultâneos.
+**Consolidada inicialmente.** A distribuição está definida na seção 8.7. Eventos de alta prioridade recebem entre 80% e 100% do foco, conforme urgência e cobertura.
 
 ### DP-012 — Ciclo de vida do evento
 
-Definir o que acontece automaticamente na data do evento e como eventos concluídos, vencidos ou cancelados afetam métricas e recomendações.
+**Consolidada para o MVP.** O sistema apenas notificará a chegada da data. O evento permanecerá editável e será gerenciado manualmente pelo usuário. Automatizações de conclusão e arquivamento irão para o backlog futuro.
 
 ### DP-013 — Canais de alerta
 
-Confirmar se alertas internos entram no MVP e deixar e-mail, navegador ou push para uma fase futura.
+**Consolidada.** Alertas internos entram no MVP. E-mail, navegador e push ficam para uma fase futura.
 
 ### DP-014 — Metas de desempenho técnico
 
-Definir tempos de resposta, disponibilidade e navegadores suportados antes do planejamento técnico.
+**Consolidada inicialmente.** Metas mensuráveis e suporte aos navegadores mais utilizados estão descritos nos requisitos `RNF-008` e `RNF-010`. A disponibilidade operacional será definida durante o planejamento técnico.
 
-### DP-015 — Calendário de atividade
+### DP-015 — Calendário
 
-Confirmar se o calendário visual fará parte do MVP ou da primeira evolução após seu lançamento.
+**Consolidada para o MVP.** Haverá um calendário simples para visualizar eventos e sessões recomendadas. O mapa analítico de atividade permanece como evolução futura.
 
-## 11. Critérios gerais de conclusão do MVP
+## 12. Critérios gerais de conclusão do MVP
 
 O MVP estará funcionalmente completo quando um usuário puder:
 
@@ -767,13 +1077,17 @@ O MVP estará funcionalmente completo quando um usuário puder:
 12. Editar um card preservando ou reiniciando conscientemente seu progresso.
 13. Receber recomendações mesmo sem informar disponibilidade de estudo.
 14. Utilizar os fluxos principais em desktop e dispositivo móvel.
+15. Configurar a duração desejada de uma sessão recomendada.
+16. Repetir cards errados sem distorcer as métricas da primeira tentativa.
+17. Consultar um calendário simples de eventos e sessões planejadas.
+18. Receber alertas internos e uma orientação antes de iniciar cada sessão.
 
-## 12. Próximo artefato após a aprovação
+## 13. Próximo artefato após a aprovação
 
 Depois da validação deste levantamento, os próximos documentos recomendados são:
 
 1. Jornadas e fluxos do usuário.
-2. Especificação detalhada das regras do motor de recomendação.
+2. Cenários de simulação e validação do motor de recomendação inicial.
 3. Modelo conceitual de domínio e dados.
 4. Arquitetura de informação e mapa de telas.
 5. Backlog do MVP com histórias de usuário e critérios de aceitação executáveis.

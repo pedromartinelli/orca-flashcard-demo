@@ -10,13 +10,16 @@ O usuário poderá:
 
 - Criar uma conta e gerenciar seus dados.
 - Organizar cards em coleções, temas e grupos.
-- Associar o mesmo card a vários temas sem duplicá-lo.
+- Associar temas, grupos e cards a vários contextos sem duplicá-los.
+- Duplicar conteúdos quando precisar criar uma versão independente.
 - Criar cards com texto formatado e fórmulas matemáticas.
 - Planejar sessões manualmente ou utilizar sessões recomendadas.
 - Avaliar mentalmente cada resposta como acerto ou erro.
 - Acompanhar tempo de resposta, histórico e evolução.
 - Visualizar o estado de aprendizagem de cada card.
 - Criar eventos com data e prioridade.
+- Configurar a duração desejada das sessões recomendadas.
+- Consultar um calendário simples de eventos e estudos planejados.
 - Receber recomendações concentradas nos assuntos de maior necessidade.
 
 O motor de recomendação deverá considerar principalmente a taxa de acerto recente, o tempo de resposta, o tempo desde a última revisão e a prioridade dos eventos.
@@ -28,7 +31,7 @@ O projeto está na fase de planejamento e especificação do produto. Ainda não
 | Artefato | Estado |
 |---|---|
 | Planejamento conceitual | Consolidado após as primeiras rodadas de validação |
-| Levantamento de requisitos | Elaborado e aguardando validação ponto a ponto |
+| Levantamento de requisitos | Em validação ponto a ponto |
 | Jornadas do usuário | Não iniciado |
 | Motor de recomendação detalhado | Não iniciado |
 | Modelo de domínio e dados | Não iniciado |
@@ -45,7 +48,7 @@ O projeto está na fase de planejamento e especificação do produto. Ainda não
 
 O MVP está sendo planejado para incluir:
 
-- Autenticação e gestão de conta.
+- Autenticação por e-mail e senha e gestão de conta.
 - Coleções, temas, grupos e cards.
 - Arquivamento, exclusão e versionamento de cards.
 - Sessões manuais e recomendadas.
@@ -54,6 +57,8 @@ O MVP está sendo planejado para incluir:
 - Pausa e retomada de sessões.
 - Estados de aprendizagem.
 - Eventos com data e prioridade.
+- Calendário simplificado de planejamento.
+- Alertas internos configuráveis.
 - Histórico e métricas por card, tema, grupo e evento.
 - Recomendações de revisão e de próximas sessões.
 - Interface web responsiva para desktop e dispositivos móveis.
