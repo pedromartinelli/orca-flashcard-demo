@@ -155,7 +155,22 @@ A lógica terá como sinais principais:
 
 O tempo desde a última revisão continuará funcionando como uma proteção contra esquecimento. Mesmo um card com excelente taxa de acerto voltará a aparecer quando permanecer muito tempo sem revisão.
 
-A prioridade dos eventos funcionará como um modificador. Um evento de alta prioridade exercerá mais influência, especialmente conforme sua data se aproxima, mas não apagará completamente as necessidades de outros conteúdos.
+A prioridade dos eventos definirá a distribuição de foco das recomendações até a data de cada evento.
+
+Quando existir um evento de alta prioridade:
+
+- A maior parte das recomendações deverá se concentrar nos temas e cards associados a ele.
+- Eventos de baixa e média prioridade receberão recomendações esporádicas de manutenção.
+- Dependendo da proximidade e das necessidades do evento prioritário, eventos de menor prioridade poderão deixar de aparecer temporariamente.
+- O sistema deverá informar claramente esse efeito ao usuário ao configurar a prioridade e ao apresentar o planejamento recomendado.
+
+Uma sessão dedicada exclusivamente a um evento deverá apresentar uma indicação como:
+
+> **Sessão focada no evento “Prova de Cálculo”, definido com prioridade alta.**
+
+Quando houver mais de um evento de alta prioridade, o foco das recomendações será dividido entre eles. Essa divisão poderá considerar a proximidade das datas, a quantidade de conteúdo restante e o desempenho do usuário, garantindo que todos os eventos de alta prioridade sejam contemplados.
+
+Em períodos com várias provas próximas, o sistema deverá recomendar prioridades semelhantes para elas. O usuário ainda poderá atribuir prioridade superior a apenas uma ou duas caso queira concentrar deliberadamente seus estudos, sendo avisado de que os demais eventos poderão receber pouca ou nenhuma recomendação até a conclusão dos eventos prioritários.
 
 ## 7. Cards associados a vários temas
 
@@ -182,6 +197,7 @@ Inicialmente, o card terá:
 
 - Pergunta.
 - Resposta.
+- Estado atual de aprendizagem, como `Novo`, `Em aprendizado`, `Em consolidação`, `Consolidado` ou `Revisão pendente`.
 - Uma ou mais associações com coleções, temas ou grupos.
 - Dados automáticos de desempenho.
 - Histórico de revisões.
@@ -194,8 +210,9 @@ Pergunta e resposta aceitarão texto editável com formatação básica para:
 - Alternativas.
 - Destaques.
 - Quebras de linha.
+- Fórmulas matemáticas, tanto em linha quanto em blocos destacados.
 
-Imagens, áudios, fórmulas avançadas e outros tipos de mídia ficam para futuras versões.
+Imagens, áudios e outros tipos de mídia ficam para futuras versões.
 
 ## 9. Alterações substanciais em um card
 
@@ -245,7 +262,7 @@ A lista consolidada passa a incluir:
 - Marcos intermediários para eventos.
 - Resposta digitada.
 - Comparação da resposta por inteligência artificial.
-- Imagens, áudio e fórmulas.
+- Imagens e áudio.
 - Cards de múltipla escolha interativos.
 - Cards com lacunas.
 - Compartilhamento de coleções.
@@ -265,7 +282,8 @@ O produto inicial será uma aplicação web responsiva para dispositivos móveis
 - Autenticação e recuperação de conta.
 - Coleções, temas e grupos.
 - Cards pertencentes a vários temas.
-- Conteúdo inicialmente textual.
+- Conteúdo inicialmente textual, com suporte à formatação de fórmulas matemáticas.
+- Exibição do estado atual de aprendizagem em cada card.
 - Arquivamento e exclusão.
 - Sessões manuais e recomendadas.
 - Inclusão de eventos em sessões manuais.
